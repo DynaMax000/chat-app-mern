@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
     default: '',
   },
 
-  lcoation: {
+  location: {
     type: String,
     default: '',
   },
