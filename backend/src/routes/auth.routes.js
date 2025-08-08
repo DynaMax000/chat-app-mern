@@ -9,6 +9,8 @@ router.post('/login', login);
 router.post('/logout', logout);
 router.post('/onboarding', protectRoute, onboard);
 
+// TODO: forgot-password case, send welcome mail and reset password
+
 // check if the user is authenticated
 router.get('/me', protectRoute, (req, res) => {
   res.status(200).json({ success: true, user: req.user, });
