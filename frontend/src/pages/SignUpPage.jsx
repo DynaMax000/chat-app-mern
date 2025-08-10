@@ -1,8 +1,8 @@
-import React from 'react'
-import { useState } from 'react'
-import { ShipWheelIcon } from 'lucide-react'
-import { Link } from 'react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ShipWheelIcon } from 'lucide-react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { Link } from 'react-router'
 import { signup } from '../lib/api'
 
 const SignUpPage = () => {
@@ -15,7 +15,13 @@ const SignUpPage = () => {
   const queryClient = useQueryClient();
   const { mutate: signupMutation, isPending, error } = useMutation({
     mutationFn: signup,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['authUser'] })
+    onSuccess: (data) => {
+      toast.success('Account created successfully!');
+      queryClient.invalidateQueries({ queryKey: ['authUser'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Signup failed');
+    }
   });
 
   const handleSignup = (e) => {
