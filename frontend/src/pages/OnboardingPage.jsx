@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CameraIcon, ShuffleIcon } from 'lucide-react';
+import { CameraIcon, ShuffleIcon, MapPinIcon, ShipWheelIcon, LoaderIcon } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import useAuthUser from '../hooks/useAuthUser';
@@ -23,6 +23,9 @@ const OnboardingPage = () => {
     onSuccess: () => {
       toast.success('Onboarding completed successfully!');
       queryClient.invalidateQueries({ queryKey: ['authUser'] });
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message);
     }
   });
 
@@ -33,7 +36,10 @@ const OnboardingPage = () => {
   }
 
   const handleRandomAvatar = () => {
-
+    const index = Math.floor(Math.random() * 100) + 1;
+    const randomAvatarUrl = `https://avatar.iran.liara.run/public/${index}.png`;
+    setFormState({ ...formState, profilePic: randomAvatarUrl });
+    toast.success('Random avatar generated!');
   }
 
   return (
@@ -96,8 +102,7 @@ const OnboardingPage = () => {
             </div>
 
             {/* Native Language */}
-            <div className='grid grid-cols-1 md:grid-cols- gap-4'>
-              {/* Native Language */}
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <div className='form-control'>
                 <label className='label'>
                   <span className='label-text'>Native Language</span>
@@ -110,7 +115,26 @@ const OnboardingPage = () => {
                 >
                   <option value=''>Select your native language</option>
                   {LANGUAGES.map((language) => (
-                    <option key={language} value={language.toLowerCase()}>
+                    <option key={`native-${language}`} value={language.toLowerCase()}>
+                      {language}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className='form-control'>
+                <label className='label'>
+                  <span className='label-text'>Learning Language</span>
+                </label>
+                <select
+                  name='learningLanguage'
+                  value={formState.learningLanguage}
+                  onChange={(e) => setFormState({ ...formState, learningLanguage: e.target.value })}
+                  className='select select-bordered w-full'
+                >
+                  <option value=''>Select your learning language</option>
+                  {LANGUAGES.map((language) => (
+                    <option key={`learning-${language}`} value={language.toLowerCase()}>
                       {language}
                     </option>
                   ))}
@@ -118,6 +142,40 @@ const OnboardingPage = () => {
               </div>
             </div>
 
+            {/* Location */}
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text'>Location</span>
+              </label>
+              <div className='relative'>
+                <MapPinIcon className='absolute top-1/2 transform -translate-y-1/2 left-3 size-5' />
+                <input
+                  type='text'
+                  name='location'
+                  value={formState.location}
+                  onChange={(e) => setFormState({ ...formState, location: e.target.value })}
+                  className='input input-bordered w-full pl-10'
+                  placeholder='City, Country'
+                />
+              </div>
+            </div>
+
+
+            {/* Submit button */}
+            <button className='btn btn-primary w-full' disabled={isPending} type='Submit'>
+              {!isPending ? (
+                <>
+                  <ShipWheelIcon className='size-5 mr-2' />
+                  Complete Onboarding
+                </>
+
+              ) : (
+                <>
+                  <LoaderIcon className='size-5 animate-spin mr-2' />
+                  Onboarding...
+                </>
+              )}
+            </button>
           </form>
         </div>
       </div>

@@ -29,7 +29,16 @@ function App() {
         <Route path="/signup" element={!isAuthenticated ? <SignUpPage /> : <Navigate to="/" />} />
         <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />} />
 
-        <Route path="/onboarding" element={isAuthenticated ? <OnboardingPage /> : <Navigate to="/login" />} />
+        <Route path="/onboarding" element={isAuthenticated ? (
+          !isOnboarded ? (
+            <OnboardingPage />
+          ) : (
+            <Navigate to="/" />
+          )
+        ) : (
+          <Navigate to="/login" />
+        )
+        } />
         <Route path="/notifications" element={isAuthenticated ? <NotificationsPage /> : <Navigate to="/login" />} />
 
         <Route path="/call" element={isAuthenticated ? <CallPage /> : <Navigate to="/login" />} />
