@@ -22,7 +22,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen" data-theme="night">
+    <div className="h-screen" data-theme="forest">
       <Routes>
         <Route path="/" element={isAuthenticated && isOnboarded ? (<Layout showSidebar={true}> <HomePage /> </Layout>) : (<Navigate to={!isAuthenticated ? '/login' : '/onboarding'} />)
         } />
