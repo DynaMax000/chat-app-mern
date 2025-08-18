@@ -10,10 +10,12 @@ import NotificationsPage from './pages/NotificationsPage'
 import OnboardingPage from './pages/OnboardingPage'
 import SignUpPage from './pages/SignUpPage'
 import Layout from './components/Layout'
+import { useThemeStore } from '../store/useThemeStore'
 
 function App() {
   const { isLoading, authUser } = useAuthUser();
 
+  const { theme } = useThemeStore();
   const isAuthenticated = Boolean(authUser);
   const isOnboarded = authUser?.isOnboarded;
 
@@ -22,7 +24,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen" data-theme="forest">
+    <div className="h-screen" data-theme={theme}>
       <Routes>
         <Route path="/" element={isAuthenticated && isOnboarded ? (<Layout showSidebar={true}> <HomePage /> </Layout>) : (<Navigate to={!isAuthenticated ? '/login' : '/onboarding'} />)
         } />
