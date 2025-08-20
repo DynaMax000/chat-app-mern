@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react'
-import { getOutgoingFriendRequests, getRecommendedUsers, getUserFriends } from '../lib/api';
+import { useEffect, useState } from 'react'
+import { getOutgoingFriendRequests, getRecommendedUsers, getUserFriends, sendFriendRequests } from '../lib/api';
 
 const HomePage = () => {
   const queryClient = useQueryClient();
-  const [outgoingRequestsIds, setOutgoingRequestsIds] = useState();
+  const [outgoingRequestsIds, setOutgoingRequestsIds] = useState(new Set());
 
   const { data:friends=[], isLoading:loadingFriends } = useQuery({
     queryKey: ['friends'],
@@ -22,11 +22,20 @@ const HomePage = () => {
   });
 
   const { mutate:sendRequestMutation, isPending } = useMutation({
-    mutationFn: sendFriendRequest,
+    mutationFn: sendFriendRequests(),
     onSuccess: () => {
       queryClient.invalidateQueries(['outgoingFriendRequests']);
     }
   });
+
+  useEffect(() => {
+    const outgoingIds = new Set();
+    if(outgoingFriendRequests && outgoingFriendRequests.length >0) {
+      outgoingFriendRequests.forEach(req => outgoingIds.add(req.id));
+      setOutgoingRequestsIds(outgoingIds);
+    }
+
+  }, [outgoingFriendRequests])
 
   return (
     <div>HomePage</div>
