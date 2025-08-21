@@ -40,18 +40,13 @@ export async function getRecommendedUsers() {
   return res.data;
 }
 
-export async function getRecommendedUsers() {
-  const res = await axiosInstance.get('/users');
-  return res.data;
-}
-
 export async function getOutgoingFriendRequests() {
-  const res = await axiosInstance.get('/users/outgoing-friend-requests');
+  const res = await axiosInstance.get('/user/outgoing-friend-requests');
   return res.data;
 }
 
-export async function sendFriendRequests(userId) {
-  const res = await axiosInstance.post(`/users/friend-request/${userId}`);
+export async function sendFriendRequest(userId) {
+  const res = await axiosInstance.post(`/user/friend-request/${userId}`);
   return res.data;
 }
 
