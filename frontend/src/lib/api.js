@@ -41,12 +41,12 @@ export async function getRecommendedUsers() {
 }
 
 export async function getOutgoingFriendRequests() {
-  const res = await axiosInstance.get('/user/outgoing-friend-requests');
+  const res = await axiosInstance.get('/users/outgoing-friend-requests');
   return res.data;
 }
 
 export async function sendFriendRequest(userId) {
-  const res = await axiosInstance.post(`/user/friend-request/${userId}`);
+  const res = await axiosInstance.post(`/users/friend-request/${userId}`);
   return res.data;
 }
 
