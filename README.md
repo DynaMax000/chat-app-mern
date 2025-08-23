@@ -69,7 +69,7 @@ Chat App MERN/
 │
 └── backend/
     ├── src/
-    │   ├── controllers/      # Route handlers
+    │   ├── controllers/     # Route handlers
     │   ├── models/          # Database models
     │   ├── routes/          # API routes
     │   ├── middlewares/     # Custom middleware
@@ -90,8 +90,8 @@ Chat App MERN/
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd "Chat App MERN"
+   git clone 
+   cd Chat App MERN
    ```
 
 2. **Backend Setup**
@@ -106,24 +106,7 @@ Chat App MERN/
    npm install
    ```
 
-### Environment Variables
-
-Create a `.env` file in the `backend` directory:
-
-```env
-# Server Configuration
-PORT=4000
-
-# Database
-MONGO_URI=mongodb://localhost:27017/chatapp
-
-# Authentication
-JWT_SECRET=your-super-secret-jwt-key
-
-# Stream Chat (Get from getstream.io)
-STREAM_API_KEY=your-stream-api-key
-STREAM_API_SECRET=your-stream-api-secret
-```
+<!-- Environment variable details intentionally omitted. Configure your backend .env according to your deployment needs. -->
 
 ### Running the Application
 
