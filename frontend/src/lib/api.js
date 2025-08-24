@@ -32,17 +32,17 @@ export const completeOnboarding = async (userData) => {
 
 export async function getUserFriends() {
   const res = await axiosInstance.get('/users/friends');
-  return res.data;
+  return res.data?.friends || [];
 }
 
 export async function getRecommendedUsers() {
   const res = await axiosInstance.get('/users');
-  return res.data;
+  return res.data?.recommendedUsers || [];
 }
 
 export async function getOutgoingFriendRequests() {
   const res = await axiosInstance.get('/users/outgoing-friend-requests');
-  return res.data;
+  return res.data?.outgoingRequests || [];
 }
 
 export async function sendFriendRequest(userId) {

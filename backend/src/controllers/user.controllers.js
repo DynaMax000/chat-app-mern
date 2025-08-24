@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import friendRequestModel from '../models/FriendRequest.model.js';
 import userModel from '../models/User.model.js';
 
@@ -37,6 +38,11 @@ export async function sendFriendRequest(req, res) {
     const myId = req.user.id;
     const { id: recipientId } = req.params;
 
+    // validate recipient id param
+    if (!recipientId || !mongoose.Types.ObjectId.isValid(recipientId)) {
+      return res.status(400).json({ message: "Invalid recipient id" });
+    }
+
     // prevent sending req to yourself
     if (myId == recipientId) {
       return res.status(400).json({ message: "You cannot send a friend request to yourself" });
@@ -49,7 +55,7 @@ export async function sendFriendRequest(req, res) {
     }
 
     // Check if the recipient is already a friend
-    if (recipient.friends.includes(myId)) {
+  if ((recipient.friends || []).some(f => f.toString() === myId)) {
       return res.status(400).json({ message: "You are already friends with this user" });
     }
 
@@ -83,6 +89,9 @@ export async function sendFriendRequest(req, res) {
 export async function acceptFriendRequest(req, res) {
   try {
     const { id: requestId } = req.params;
+    if (!requestId || !mongoose.Types.ObjectId.isValid(requestId)) {
+      return res.status(400).json({ message: "Invalid friend request id" });
+    }
     const friendRequest = await friendRequestModel.findById(requestId);
 
     if (!friendRequest) {
