@@ -1,5 +1,5 @@
+import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema({
   fullName: {
@@ -51,11 +51,12 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 
-  friends: [{
-    default: [],
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }]
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ]
 },
   { timestamps: true });
 

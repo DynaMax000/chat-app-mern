@@ -1,5 +1,5 @@
-import userModel from '../models/User.model.js'
 import friendRequestModel from '../models/FriendRequest.model.js';
+import userModel from '../models/User.model.js';
 
 export async function getRecommendedUsers(req, res) {
   try {
@@ -9,7 +9,7 @@ export async function getRecommendedUsers(req, res) {
     const recommendedUsers = await userModel.find({
       $and: [
         { _id: { $ne: currentUserId } }, // Exclude current user
-        { $id: { $nin: currentUser.friends } }, // Exclude friends
+        { _id: { $nin: currentUser.friends || [] } }, // Exclude friends
         { isOnboarded: true } // Only include onboarded users
       ]
     });
@@ -80,7 +80,7 @@ export async function sendFriendRequest(req, res) {
   }
 }
 
-export async function acceptFriegitndRequest(req, res) {
+export async function acceptFriendRequest(req, res) {
   try {
     const { id: requestId } = req.params;
     const friendRequest = await friendRequestModel.findById(requestId);
@@ -148,6 +148,6 @@ export async function getOutgoingFriendRequests(req, res) {
   catch (error) {
     console.log("Error in getOutgoingFriendRequests controller:", error);
     res.status(500).json({ message: "Internal Server Error" });
-    
+
   }
 }

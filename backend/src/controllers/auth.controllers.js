@@ -1,7 +1,7 @@
 
-import jwt from 'jsonwebtoken'
-import userModel from '../models/User.model.js'
-import { upsertStreamUser } from '../lib/stream.js'
+import jwt from 'jsonwebtoken';
+import { upsertStreamUser } from '../lib/stream.js';
+import userModel from '../models/User.model.js';
 
 export async function signup(req, res) {
   const { fullName, email, password } = req.body;
@@ -98,7 +98,11 @@ export async function login(req, res) {
 };
 
 export function logout(req, res) {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+  });
   res.status(200).json({ message: "Logout Successful" })
 };
 
