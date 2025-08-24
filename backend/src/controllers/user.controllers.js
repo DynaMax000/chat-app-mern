@@ -80,7 +80,7 @@ export async function sendFriendRequest(req, res) {
   }
 }
 
-export async function acceptFriendRequest(req, res) {
+export async function acceptFriegitndRequest(req, res) {
   try {
     const { id: requestId } = req.params;
     const friendRequest = await friendRequestModel.findById(requestId);
