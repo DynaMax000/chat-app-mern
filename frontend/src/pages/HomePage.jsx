@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import FriendCard from '../components/FriendCard';
 import { getOutgoingFriendRequests, getRecommendedUsers, getUserFriends, sendFriendRequest } from '../lib/api';
+import NoFriendFound from '../components/NoFriendFound';
 
 const HomePage = () => {
   const queryClient = useQueryClient();
@@ -63,7 +64,7 @@ const HomePage = () => {
           </div>
 
         ) : (friends || []).length === 0 ? (
-          <p>No friends yet.</p>
+          <NoFriendFound />
         ) : (
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
             {(friends || []).map((friend) => {
