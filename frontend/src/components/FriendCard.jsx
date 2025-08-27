@@ -1,25 +1,16 @@
 import { Link } from "react-router";
 import { LANGUAGE_TO_FLAG } from "../constants";
 
-/*
-Props:
-- friend: { _id, fullName, profilePic, nativeLanguage, learningLanguage }
-- onAdd: () => void
-- isPending: boolean
-*/
-const FriendCard = ({ friend, onAdd, isPending }) => {
-  if (!friend) return null;
+const FriendCard = ({ friend }) => {
   return (
     <div className="card bg-base-200 hover:shadow-md transition-shadow">
       <div className="card-body p-4">
-        {/* User info */}
+        {/* USER INFO */}
         <div className="flex items-center gap-3 mb-3">
           <div className="avatar size-12">
             <img src={friend.profilePic} alt={friend.fullName} />
           </div>
-          <div>
-            <h3 className="font-semibold truncate">{friend.fullName}</h3>
-          </div>
+          <h3 className="font-semibold truncate">{friend.fullName}</h3>
         </div>
 
         <div className="flex flex-wrap gap-1.5 mb-3">
@@ -32,14 +23,14 @@ const FriendCard = ({ friend, onAdd, isPending }) => {
             Learning: {friend.learningLanguage}
           </span>
         </div>
-        <Link to={`/chat/${friend._id}`} className="btn btn-sm btn-secondary">
+
+        <Link to={`/chat/${friend._id}`} className="btn btn-outline w-full">
           Message
         </Link>
       </div>
     </div>
   );
 };
-
 export default FriendCard;
 
 export function getLanguageFlag(language) {
@@ -53,9 +44,9 @@ export function getLanguageFlag(language) {
       <img
         src={`https://flagcdn.com/24x18/${countryCode}.png`}
         alt={`${langLower} flag`}
-        className="inline-block h-3 mr-1" />
+        className="h-3 mr-1 inline-block"
+      />
     );
   }
-
   return null;
 }
