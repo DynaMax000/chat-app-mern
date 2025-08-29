@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import FriendCard, { getLanguageFlag } from '../components/FriendCard';
 import { getOutgoingFriendRequests, getRecommendedUsers, getUserFriends, sendFriendRequest } from '../lib/api';
 import NoFriendFound from '../components/NoFriendFound';
+import { capitalize } from '../lib/utils';
 
 const HomePage = () => {
   const queryClient = useQueryClient();
@@ -169,5 +170,3 @@ const HomePage = () => {
 }
 
 export default HomePage;
-
-const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
