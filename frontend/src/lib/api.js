@@ -50,6 +50,16 @@ export async function sendFriendRequest(userId) {
   return res.data;
 }
 
+export async function getFriendRequest() {
+  const res = await axiosInstance.get(`/users/friend-request/`);
+  return res.data;
+}
+
+export async function acceptFriendRequest(requestId) {
+  const res = await axiosInstance.post(`/users/friend-request/${requestId}/accept`);
+  return res.data;
+}
+
 export default {
   signup,
   getAuthUser
