@@ -1,6 +1,6 @@
 # Chatter - Language Learning Chat Application
 
-A modern MERN stack chat application designed for language learners to connect, practice, and improve their language skills through real-time conversations with native speakers and fellow learners worldwide.
+Modern MERN stack app for language learners to discover partners, build friendships, and chat in real time.
 
 ## 🚀 Features
 
@@ -10,50 +10,45 @@ A modern MERN stack chat application designed for language learners to connect, 
 - **Secure Password Hashing** with bcryptjs
 - **Cookie-based Session Management**
 
-### 💬 Chat & Communication
-- **Real-time Messaging** powered by Stream Chat
-- **Video/Voice Calls** for practice sessions
-- **Language Partner Matching**
-- **Notification System**
+### 💬 Social & Communication
+- **Real-time Messaging** (Stream Chat integration scaffolded – token endpoint in place)
+- **Friend Requests** (send, view outgoing, accept)
+- **Recommended Users** (excludes current user & existing friends; only onboarded users)
+- **Future**: Calls & richer notifications (UI placeholders exist)
 
 ### 🌐 User Experience
-- **Responsive Design** with Tailwind CSS and DaisyUI
-- **Dark/Light Theme Support**
-- **Multi-language Interface**
-- **Mobile-First Design**
+- Responsive Tailwind + DaisyUI UI
+- Theme switcher (DaisyUI themes via Zustand store)
+- Toast feedback (react-hot-toast)
+- Accessible, mobile‑first layout
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 19** - Modern UI library
-- **Vite** - Fast build tool and dev server
-- **TanStack Query** - Server state management
-- **React Router** - Client-side routing
-- **Tailwind CSS** - Utility-first CSS framework
-- **DaisyUI** - Component library for Tailwind
-- **Lucide React** - Beautiful icons
-- **React Hot Toast** - Elegant notifications
-- **Axios** - HTTP client
+- React 19 + Vite
+- TanStack Query (data fetching & caching)
+- React Router 7 (routing & guards)
+- Tailwind CSS + DaisyUI (styling & themes)
+- Zustand (lightweight global state: theme)
+- Axios (pre‑configured instance with credentials)
+- Lucide React icons / react-hot-toast
 
 ### Backend
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **MongoDB** - NoSQL database
-- **Mongoose** - MongoDB object modeling
-- **JWT** - JSON Web Tokens for authentication
-- **bcryptjs** - Password hashing
-- **Stream Chat** - Real-time messaging service
-- **CORS** - Cross-origin resource sharing
-- **Cookie Parser** - Cookie parsing middleware
+- Node.js / Express (ESM)
+- MongoDB + Mongoose (User & FriendRequest models)
+- JWT auth (httpOnly cookie, 7d expiry)
+- bcryptjs password hashing (pre-save hook)
+- Stream Chat client (user upsert + token generation)
+- CORS + cookie-parser middleware
 
-## 📁 Project Structure
+## 📁 Project Structure (Simplified)
 
 ```
 Chat App MERN/
 ├── frontend/
 │   ├── src/
-│   │   ├── components/        # Reusable UI components
-│   │   ├── pages/            # Application pages
+│   │   ├── components/        # Reusable UI (FriendCard, Layout, ThemeSelector...)
+│   │   ├── pages/             # Route pages
 │   │   │   ├── HomePage.jsx
 │   │   │   ├── LoginPage.jsx
 │   │   │   ├── SignUpPage.jsx
@@ -69,12 +64,12 @@ Chat App MERN/
 │
 └── backend/
     ├── src/
-    │   ├── controllers/     # Route handlers
-    │   ├── models/          # Database models
-    │   ├── routes/          # API routes
-    │   ├── middlewares/     # Custom middleware
-    │   ├── lib/             # Utility functions
-    │   └── server.js        # Express server
+   │   ├── controllers/      # Auth, user, chat logic
+   │   ├── models/           # User, FriendRequest
+   │   ├── routes/           # /auth, /users, /chat
+   │   ├── middlewares/      # protectRoute (JWT)
+   │   ├── lib/              # db, stream helpers
+   │   └── server.js         # App entrypoint
     ├── package.json
     └── .env
 ```
@@ -106,7 +101,7 @@ Chat App MERN/
    npm install
    ```
 
-<!-- Environment variable details intentionally omitted. Configure your backend .env according to your deployment needs. -->
+Environment variables intentionally omitted; set your own (PORT, FRONTEND_URL, MONGO_URI, JWT_SECRET, STREAM_API_KEY, STREAM_API_SECRET, etc.).
 
 ### Running the Application
 
@@ -126,58 +121,52 @@ Chat App MERN/
    ```
    Frontend will run on `http://localhost:5173`
 
-## 📱 Application Flow
-
-1. **Registration/Login** - Users create accounts or sign in
-2. **Onboarding** - New users complete their profile with:
-   - Bio and interests
-   - Native language
-   - Languages they want to learn
-   - Location
-3. **Home Dashboard** - Browse language partners and features
-4. **Chat** - Real-time messaging with other users
-5. **Video Calls** - Practice speaking with language partners
-6. **Notifications** - Stay updated with messages and activities
+## 📱 Core Flow
+1. Sign up / Login → JWT cookie issued
+2. Onboarding → set bio, nativeLanguage, learningLanguage, location (marks isOnboarded=true)
+3. Home → shows friends + recommended users
+4. Send friend requests → outgoing & incoming tracked
+5. (Planned) Accept → becomes mutual friendship; chat/call expansion planned
 
 ## 🔑 API Endpoints
 
-### Authentication Routes (`/api/auth`)
-- `POST /signup` - Register new user
-- `POST /login` - User login
-- `POST /logout` - User logout
-- `GET /me` - Get current user
-- `POST /onboarding` - Complete user onboarding
+### Auth (`/api/auth`)
+- POST /signup
+- POST /login
+- POST /logout
+- GET /me (protected)
+- POST /onboarding (protected)
 
-### User Routes (`/api/users`)
-- `GET /` - Get all users
-- `GET /:id` - Get user by ID
+### Users (`/api/users` – all protected)
+- GET /               → Recommended users
+- GET /friends         → Current friends (populated)
+- POST /friend-request/:id
+- PUT  /friend-request/:id/accept
+- GET /friend-requests (incoming + accepted summary)
+- GET /outgoing-friend-requests
 
-### Chat Routes (`/api/chat`)
-- `GET /token` - Get Stream Chat token
+### Chat (`/api/chat`)
+- GET /token (requires auth; returns Stream token)
 
 ## 🎨 UI Features
+- Theme selector (DaisyUI)
+- Loading & skeleton states (spinners)
+- Toast notifications (auth, onboarding, requests)
+- Language flags (country code mapping)
+- Responsive card grid
 
-- **Dark Mode Support** with DaisyUI themes
-- **Responsive Design** for mobile and desktop
-- **Loading States** and error handling
-- **Toast Notifications** for user feedback
-- **Form Validation** and error messages
-
-## 🔒 Security Features
-
-- **JWT Authentication** with httpOnly cookies
-- **Password Hashing** with bcryptjs
-- **CORS Protection** for cross-origin requests
-- **Input Validation** and sanitization
-- **Secure Headers** and best practices
+## 🔒 Security & Hardening
+- httpOnly JWT cookie (7d)
+- Password hashing (bcrypt, salt rounds 10)
+- CORS restricted to FRONTEND_URL
+- Token validation & 401 handling in middleware
+- Input validation in controllers (IDs, required fields)
 
 ## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Fork
+2. Create feature branch
+3. Commit & push
+4. Open PR
 
 ## 📄 License
 
