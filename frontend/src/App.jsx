@@ -1,5 +1,7 @@
 import { Toaster } from 'react-hot-toast'
 import { Navigate, Route, Routes } from 'react-router'
+import { useThemeStore } from '../store/useThemeStore'
+import Layout from './components/Layout'
 import PageLoader from './components/PageLoader'
 import useAuthUser from './hooks/useAuthUser'
 import CallPage from './pages/CallPage'
@@ -9,8 +11,6 @@ import LoginPage from './pages/LoginPage'
 import NotificationsPage from './pages/NotificationsPage'
 import OnboardingPage from './pages/OnboardingPage'
 import SignUpPage from './pages/SignUpPage'
-import Layout from './components/Layout'
-import { useThemeStore } from '../store/useThemeStore'
 
 function App() {
   const { isLoading, authUser } = useAuthUser();

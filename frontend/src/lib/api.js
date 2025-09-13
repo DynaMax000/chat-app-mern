@@ -46,12 +46,12 @@ export async function getOutgoingFriendRequests() {
 }
 
 export async function sendFriendRequest(userId) {
-  const res = await axiosInstance.post(`/users/friend-request/${userId}`);
+  const res = await axiosInstance.post(`/users/friend-requests/${userId}`);
   return res.data;
 }
 
 export async function getFriendRequest() {
-  const res = await axiosInstance.get(`/users/friend-request/`);
+  const res = await axiosInstance.get(`/users/friend-requests/`);
   return res.data;
 }
 
